@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>vCard Viewer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="VCARD GUI for library that was created">
+    <meta name="keywords" content="VCARD">
+    <meta name="author" content="Indeep Farma">
+    <!-- Load jquery, bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <!-- Custom CSS End -->
+</head>
+<body>
+    
+  <!-- NAVBAR SECTION -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">VCard Viewer</a>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="#fileLog">File Log</a>
+          <a class="nav-item nav-link" href="#cardView">Card View</a>
+          <a class="nav-item nav-link" href="#createVCard">Add Card</a>
+        </div>
+      </div>
+      <span class="navbar-text">
+        CIS 2750 A3
+      </span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <br>
+
+  <!-- WELCOME PROMPT -->
+  <div id="welcomePrompt">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1 class="text-center">VCard Viewer</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FILE LOG SECTION -->
+  <div id="fileLog">
+    <div class="container" id="fileLog">
+      <div class="row">
+        <div class="col">
+          <h4 class="text-center"><u>File Log</u> </h4>
+          <p class="text-center" id="fLogDes">View the File Logs from the VCard files. If you would like to download any of the cards for further review and reading - click on the file name to download the complete file. Complete file will show you all additional properties and the values associated with them</p>
+          <div class="card shadow bg-white rounded">
+            <div class="table-wrapper">
+              <table class="table table-striped">
+                <thead class="theadCustom">
+                  <tr>
+                    <th scope="col">File Name (click to download)</th>
+                    <th scope="col">Individual's Name</th>
+                    <th scope="col">Additional Properties</th>
+                  </tr>
+                </thead>
+                <tbody id="fileLogBody">
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+
+  <!-- Upload file form -->
+  <div class="container">
+     <div class="row">
+       <div class="col">
+          <div class="text-center">
+            <form id="vcardUpload" method = "post" action="/upload" enctype="multipart/form-data">
+                <label>Select a VCard to Upload</label>
+                <input class="form-control-file text-center" type="file" name="uploadFile" accept=".vcf" accept=".vcard">
+                <br>
+                <button class="btn btnCustom" type="submit">Click to Upload</button>
+            </form>
+          </div>
+       </div>
+     </div>
+  </div> 
+ 
+
+  <br>
+  <br>
+
+  <!-- CARD VIEW SECTION -->
+  <div id="cardView">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4 class="text-center"><u>Card View Panel</u> </h4>
+          <p class="text-center" id="cardViewDes">The following tables show the properties of the currently open file. If you can not see any table then there are no files on the server. Please upload a file to see the properties and values. To look at different cards uploaded select your card from the dropdown menu</p>
+          <!-- Dropdown list -->
+          <div class="text-center">
+            <div >
+              <select id="dropdownList"></select>
+            </div>
+          </div>
+          <br>
+          <div class="text-center">
+            <div class="col">
+              <button type="button" class="btn btnCustom" data-toggle="modal" data-target="#editValuesModal" id="editValues">Edit Values
+              </button>
+              <button type="button" class="btn btnCustom" data-toggle="modal" data-target="#showParametersModal" id="showParam">Show Parameters</button>
+              <button type="button" class="btn btnCustom" data-toggle="modal" data-target="#addPropertyModal" id="addProp">Add Property</button>
+            </div>
+          </div>
+
+          <!-- MODAL DIV FOR PARAMETERS -->
+          <div class="modal fade" id="showParametersModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabel">Vew Card Parameters</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-striped" id="showParamTable">
+                    <thead class="theadCustom">
+                      <tr>
+                        <th scope="col">Property Name</th>
+                        <th scope="col">Parameters</th>
+                      </tr>
+                    </thead>
+                    <tbody id="showParamBody">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODAL DIV FOR EDIT VALUES -->
+          <div class="modal fade" id="editValuesModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabel">Edit Values of Properties</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <h5 class="text-center">Select Property:</h5>
+
+                 <!-- Dropdown list and Form -->
+                <div class="text-center">
+                  <div >
+                    <select id="dropdownValues"></select>
+                  </div>
+                </div>
+                <div class="modal-body">
+                  <form id="editValuesForm">
+                    <div class="form-group row">
+                      <div class="col-sm" id="editValInput">
+                      </div>
+                    </div>
+                    <button class="btn btnCustom" id="submitEditVal">Submit Change</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODAL FOR ADDING A PROPERTY -->
+          <div class="modal fade" id="addPropertyModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabel">Add Property</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="editValuesForm">
+                    <div class="form-group row">
+                      <div class="col-sm" id="editValInput">
+                        <label for="propName" class="col-sm-2 col-form-label">Name:</label>
+                        <div class="col-sm">
+                          <input type="text" class="form-control" id="propName" placeholder="Name of Property" required>
+                        </div>
+                        <label for="propValues" class="col-sm-2 col-form-label">Value:</label>
+                        <div class="col-sm">
+                          <input type="text" class="form-control" id="propValues" placeholder="Property Value" required>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="btn btnCustom" id="submitAddProp">Submit Property</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <br>
+          <div class="card shadow bg-white rounded">
+            <div class="table-wrapper vCTable">
+              <table class="table table-striped" id="cardViewTable">
+                <thead class="theadCustom">
+                  <tr>
+                    <th scope="col">Property #</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Values</th>
+                    <th scope="col">Parameters</th>
+                  </tr>
+                </thead>
+                <tbody id="viewCardBody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+         </div>
+      </div>
+    </div>
+  </div> 
+
+  <!-- CREATE A VCARD-->
+  <div id="createVCard">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="text-center">Create your own custom VCard. A VCard requires a minimum of having at least an FN Property</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mx-auto col-sm-8">
+          <div class="card shadow bg-white rounded">
+            <div class="card-header">
+              <h4 class="text-center">Create VCard</h4>
+            </div>
+            <div class="card-body">
+              <form id="createVCardForm">
+                <div class="form-group row">
+                  <label for="inputFileName" class="col-sm-2 col-form-label">FileName</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputFileName" placeholder="Name of File" required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="inputFN" class="col-sm-2 col-form-label">FN</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputFN" placeholder="FN Value" required>
+                  </div>
+                </div>
+                <!-- <div type="submit" class="btn btnCustom">Submit</div> -->
+                <button class="btn btnCustom" id="submitCreateCard">Create Card</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <!-- Footer -->
+  <footer class="page-footer font-small teal pt-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mt-md-0 mt-3">
+          <h5 class="text-uppercase font-weight-bold">VCard Viewer</h5>
+          <ul>
+            <li>CIS 2750</li>
+            <li>Assignment 3</li>
+            <li>Author: Indeep Farma</li>
+            <li>Student Number: 1015266</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright text-center py-3">
+      © 2020: Indeep Farma
+    </div>
+  </footer>
+    <!-- Leave me at the bottom of body -->
+    <script src="/index.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

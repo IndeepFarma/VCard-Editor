@@ -1,0 +1,70 @@
+body {
+    /* background-color: #f0f0f0; */
+    background-color: #ffffff;
+  }
+  
+  /* Used to make sure table is able to be vertically scrolled */
+  .table-wrapper {
+    max-height: 295px;
+    overflow: auto;
+    display: inline-block;
+  }
+  
+  .vCTable {
+    max-height: 530px;
+  }
+
+  .theadCustom {
+    background-color: #9a7b4f;
+  }
+  
+  /* Line break */
+  hr {
+    width: 50%;
+  }
+  
+  /* NAVIGATION BAR */
+  nav {
+    background-color: #1c0e04;
+  }
+  
+  /**** FILE LOG SECTION ****/
+  #fileLog {
+    /* background-color: #ffffff; */
+    padding: 8px 0px 12px 0px;
+  }
+  
+  #fLogDes {
+    text-justify: inter-word;
+  }
+  
+  /**** CARD VIEW SECTION ****/
+  #cardView {
+    background-color: #f4f4f4;
+    padding: 50px 0px 50px 0px;
+  }
+  
+  #cardViewDes {
+    text-justify: inter-word;
+  }
+  
+  .btnCustom {
+    background-color: #4a3728;
+    color: #ffffff;
+  }
+  
+  /*** CREATE VCARD SECTION ***/
+  #createVCard {
+    padding: 50px 0px 50px 0px;
+  }
+  
+  
+  /*** FOOTER *****/
+  footer {
+    background-color: #1c0e04;
+    color: #ffffff;
+  }
+  
+  footer li {
+    list-style-type: none;
+  }
